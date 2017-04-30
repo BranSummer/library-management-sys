@@ -2,6 +2,8 @@ package org.bransummer.db_coursedesign_libaray;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -24,7 +26,7 @@ import javax.swing.JTextField;
  */
 public class ReaderRegistFrame extends JFrame {
 	//姓名，地址，电话，邮件
-	private JTextField name,address,tele,email;
+	private JTextField name,address,tele,email,employer;
 	//备注
 	private JTextArea remarks;
 	//读者种类
@@ -36,14 +38,14 @@ public class ReaderRegistFrame extends JFrame {
 	//注册，取消按钮
 	private JButton submit,cancel;
 	
-	public ReaderRegistFrame(){
+	 ReaderRegistFrame(){
 		super("注册读者号");
 		this.setSize(400, 400);
 		this.setLocationRelativeTo(getOwner());
 		Container container=this.getContentPane();
 		container.setLayout(new BoxLayout(container,BoxLayout.Y_AXIS));
 		JPanel panel1=new JPanel();
-		panel1.setLayout(new GridLayout(8,2));
+		panel1.setLayout(new GridLayout(9,2));
 		//姓名
 		panel1.add(new JLabel("姓名",JLabel.CENTER));
 		name=new JTextField(20);
@@ -73,6 +75,10 @@ public class ReaderRegistFrame extends JFrame {
 		sort.addItem("其他");
 		panel1.add(new JLabel("类别",JLabel.CENTER));
 		panel1.add(sort);
+		//工作单位
+		panel1.add(new JLabel("工作单位",JLabel.CENTER));
+		employer=new JTextField(20);
+		panel1.add(employer);
 		//家庭住址
 		panel1.add(new JLabel("家庭住址",JLabel.CENTER));
 		address=new JTextField(20);
@@ -94,7 +100,7 @@ public class ReaderRegistFrame extends JFrame {
 		panel2.add(scroll);
 		//注册，取消按钮
 		JPanel panel3=new JPanel(new GridLayout(1, 2));
-		submit=new JButton("注册");
+		submit=new JButton("提交");
 		cancel=new JButton("取消");
 		panel3.add(submit);
 		panel3.add(cancel);
@@ -102,10 +108,44 @@ public class ReaderRegistFrame extends JFrame {
 		container.add(panel1);
 		container.add(panel2);
 		container.add(panel3);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.addWindowListener(new WindowListener() {
+			
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				System.exit(0);
+			}
+			
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		this.setVisible(true);
 	}
-	public static void main(String[] args) {
-		new ReaderRegistFrame();
-	}
+	
 }
