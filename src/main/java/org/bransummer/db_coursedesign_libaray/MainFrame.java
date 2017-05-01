@@ -1,5 +1,7 @@
 package org.bransummer.db_coursedesign_libaray;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -7,6 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.bran.module.BookInsertPanel;
 /**
  * 
  *<p>Title: MainFrame.java</p>
@@ -16,6 +22,7 @@ import javax.swing.JMenuItem;
  */
 public class MainFrame extends JFrame {
 	private JMenuBar menuBar;
+	
 	//系统菜单项
 	private JMenu system;
 	private JMenuItem userManage;
@@ -34,8 +41,9 @@ public class MainFrame extends JFrame {
 	private JMenuItem readerDelete;
 	public MainFrame(){
 		super("图书馆");
-		this.setSize(500, 300);
+		this.setSize(600, 400);
 		this.setLocationRelativeTo(getOwner());
+		this.getContentPane().add(new JPanel());
 		//创建系统菜单
 		system=new JMenu("系统");
 		userManage=new JMenuItem("用户管理");
@@ -55,6 +63,17 @@ public class MainFrame extends JFrame {
 		//创建数据操作菜单
 		edit=new JMenu("编辑");
 		insert=new JMenuItem("添加");
+		//【添加】注册监听器
+				this.insert.addActionListener(new ActionListener() {
+					
+					public void actionPerformed(ActionEvent arg0) {
+						getContentPane().removeAll();
+						getContentPane().invalidate();
+						getContentPane().add(new JScrollPane(new BookInsertPanel()));
+						getContentPane().revalidate();
+						setVisible(true);
+					}
+				});
 		delete=new JMenuItem("删除");
 		update=new JMenuItem("更新");
 		readerDelete=new JMenuItem("读者删除");
@@ -68,6 +87,10 @@ public class MainFrame extends JFrame {
 		menuBar.add(query);
 		menuBar.add(edit);
 		this.setJMenuBar(menuBar);
+	
+		
+		
+		//windows监听器
 		this.addWindowListener(new WindowListener() {
 			
 			public void windowOpened(WindowEvent e) {

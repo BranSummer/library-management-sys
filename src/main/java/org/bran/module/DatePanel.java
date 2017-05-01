@@ -12,7 +12,13 @@ import javax.swing.JPanel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-
+/**
+ * 
+ *<p>Title: DatePanel.java</p>
+ *<p>Description:调用JDatePickerjar包集成的日历 </p>
+ * @author BranSummer
+ * @date 2017年5月1日
+ */
 public class DatePanel extends JPanel {
 	DatePanel(){
 		Properties p = new Properties();
@@ -27,7 +33,7 @@ public class DatePanel extends JPanel {
 	}
 	public static void main(String[] args) {
 		JFrame frame=new JFrame("test");
-		
+		frame.setSize(200, 100);
 		frame.getContentPane().add(new DatePanel());
 		frame.setVisible(true);
 	}
