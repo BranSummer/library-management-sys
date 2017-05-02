@@ -1,6 +1,9 @@
 package org.bran.module;
 
+import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -81,11 +84,24 @@ public class BookInsertPanel extends JPanel {
 		//创建提交按钮
 		JPanel panel3=new JPanel(new GridLayout(1,2));
 		submit=new JButton("提交");
+		submit.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		reset=new JButton("重置");
+		reset.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				 remarks.setText("");
+				
+			}
+		});
 		panel3.add(submit);
 		panel3.add(reset);
-		//TODO 注册监听器
-		panel2.setSize(WIDTH, 200);
+		//加入主面板
 		this.add(panel1);
 		this.add(panel2);
 		this.add(panel3);

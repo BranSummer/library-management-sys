@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.bran.module.BookInsertPanel;
+import org.bran.module.BookQueryPanel;
 /**
  * 
  *<p>Title: MainFrame.java</p>
@@ -55,6 +56,17 @@ public class MainFrame extends JFrame {
 		//创建查询菜单
 		query=new JMenu("查询");
 		bookQuery=new JMenuItem("图书查询");
+		bookQuery.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				getContentPane().removeAll();
+				getContentPane().invalidate();
+				getContentPane().add(new JScrollPane(new BookQueryPanel()));
+				getContentPane().revalidate();
+				setVisible(true);
+				
+			}
+		});
 		readerQuery=new JMenuItem("读者查询");
 		borrowQuery=new JMenuItem("借阅查询");
 		query.add(bookQuery);
@@ -63,20 +75,52 @@ public class MainFrame extends JFrame {
 		//创建数据操作菜单
 		edit=new JMenu("编辑");
 		insert=new JMenuItem("添加");
-		//【添加】注册监听器
-				this.insert.addActionListener(new ActionListener() {
-					
-					public void actionPerformed(ActionEvent arg0) {
-						getContentPane().removeAll();
-						getContentPane().invalidate();
-						getContentPane().add(new JScrollPane(new BookInsertPanel()));
-						getContentPane().revalidate();
-						setVisible(true);
-					}
-				});
+		/**
+		 * 【添加】注册监听器
+		 */
+		this.insert.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				getContentPane().removeAll();
+				getContentPane().invalidate();
+				getContentPane().add(new JScrollPane(new BookInsertPanel()));
+				getContentPane().revalidate();
+				setVisible(true);
+			}
+		});
 		delete=new JMenuItem("删除");
+		/**
+		 * 【删除】注册监听器
+		 */
+		delete.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		update=new JMenuItem("更新");
+		/**
+		 * 【更新注册监听器】
+		 */
+		update.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		readerDelete=new JMenuItem("读者删除");
+		/**
+		 * 【读者删除】注册监听器
+		 */
+		readerDelete.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		edit.add(insert);
 		edit.add(delete);
 		edit.add(update);

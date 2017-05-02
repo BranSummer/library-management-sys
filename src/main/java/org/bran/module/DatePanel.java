@@ -1,10 +1,13 @@
 package org.bran.module;
 
+import java.awt.Component;
+import java.awt.FlowLayout;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
+import javax.swing.JComponent;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,7 +23,9 @@ import org.jdatepicker.impl.UtilDateModel;
  * @date 2017年5月1日
  */
 public class DatePanel extends JPanel {
+	private JDatePickerImpl datePicker;
 	DatePanel(){
+		this.setLayout(new FlowLayout());
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
@@ -28,8 +33,14 @@ public class DatePanel extends JPanel {
 		UtilDateModel model = new UtilDateModel();
 		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 		// Don't know about the formatter, but there it is...
-		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		 datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 		this.add(datePicker);
+	}
+	public void setLeft(){
+		this.setAlignmentX(LEFT_ALIGNMENT);
+	}
+	public void setRight(){
+		this.setAlignmentX(RIGHT_ALIGNMENT);
 	}
 	public static void main(String[] args) {
 		JFrame frame=new JFrame("test");
