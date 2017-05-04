@@ -36,8 +36,9 @@ public class BookInsertPanel extends JPanel {
 
 	public BookInsertPanel(){
 		super();
+		//布局
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-				
+		//输入区表格布局		
 		JPanel panel1=new JPanel(new GridLayout(10, 2));
 		//创建图书编号，书名,作者,出版社
 		bookId=new JTextField(20);
@@ -106,12 +107,12 @@ public class BookInsertPanel extends JPanel {
 		this.add(panel2);
 		this.add(panel3);
 	}
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		JFrame test=new JFrame("test");
 		test.setSize(600, 400);
 		test.getContentPane().add(new BookInsertPanel());
 		test.setVisible(true);
-	}
+	}*/
 }
 
 

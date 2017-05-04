@@ -13,7 +13,13 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
+/**
+ * 
+ *<p>Title: BookQueryPanel.java</p>
+ *<p>Description:图书查询面板 </p>
+ * @author BranSummer
+ * @date 2017年5月4日
+ */
 public class BookQueryPanel extends JPanel {
 	//日期
 	private DatePanel preDate,nexDate;
@@ -29,6 +35,7 @@ public class BookQueryPanel extends JPanel {
 	
 	public BookQueryPanel(){
 		super();
+		//创建分割面板
 		JSplitPane sp=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		this.add(sp);
 		//创建默认表格模型
@@ -70,14 +77,15 @@ public class BookQueryPanel extends JPanel {
 		minPanel2.add(Box.createVerticalGlue());
 		panel1.add(minPanel2);
 		
-		
+		//加入分割面板
 		sp.add(panel1, JSplitPane.TOP);
 		sp.add(scroll, JSplitPane.BOTTOM);
 	}
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		JFrame test=new JFrame("test");
 		test.setSize(600, 400);
 		test.getContentPane().add(new BookQueryPanel());
 		test.setVisible(true);
 	}
+*/	
 }

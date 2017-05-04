@@ -13,7 +13,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-
+/**
+ * 
+ *<p>Title: BookDeletePanel.java</p>
+ *<p>Description:图书删除面板 </p>
+ * @author BranSummer
+ * @date 2017年5月4日
+ */
 public class BookDeletePanel extends JPanel {
 	//输入文本框
 	private JTextField input;
@@ -45,6 +51,9 @@ public class BookDeletePanel extends JPanel {
 				// TODO Auto-generated method stub
 				return super.isCellEditable(row, column);
 			}
+			/**
+			 * jtabel内置复选框功能，须重写此方法
+			 */
 			@Override
             public Class getColumnClass(int column) {
                 switch (column) {
@@ -63,12 +72,10 @@ public class BookDeletePanel extends JPanel {
 			
 			
 		};
-		//表格填充复选框
-		
-		
+			
 		table=new JTable(model);
-		
 		JScrollPane scroll=new JScrollPane();
+		//显示表头
 		scroll.setViewportView(table);
 		//输入区
 		JPanel panel1=new JPanel();
@@ -88,11 +95,11 @@ public class BookDeletePanel extends JPanel {
 		sp.add(panel1);
 		sp.add(scroll, JSplitPane.BOTTOM);	
 	}
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		JFrame test=new JFrame("test");
 		test.setSize(600, 400);
 		test.getContentPane().add(new BookDeletePanel());
 		test.setVisible(true);
 	}
-
+*/
 }

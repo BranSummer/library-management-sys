@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import org.bran.module.BookDeletePanel;
 import org.bran.module.BookInsertPanel;
 import org.bran.module.BookQueryPanel;
+import org.bran.module.BookUpdatePanel;
 /**
  * 
  *<p>Title: MainFrame.java</p>
@@ -47,9 +48,11 @@ public class MainFrame extends JFrame {
 	private JScrollPane bookDeletePanel;
 	//图书添加界面
 	private JScrollPane bookInsertPanel;
+	//图书修改界面
+	private JScrollPane bookUpdatePanel;
 	public MainFrame(){
 		super("图书馆");
-		this.setSize(800, 600);
+		this.setSize(700, 500);
 		this.setLocationRelativeTo(getOwner());
 		this.getContentPane().add(new JPanel());
 		//创建系统菜单
@@ -122,7 +125,12 @@ public class MainFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				if(bookUpdatePanel==null){
+					bookUpdatePanel=new JScrollPane(new BookUpdatePanel());
+				}
+				setContentPane(bookUpdatePanel);
+				invalidate();
+				validate();
 			}
 		});
 		readerDelete=new JMenuItem("读者修改");
@@ -173,7 +181,6 @@ public class MainFrame extends JFrame {
 			}
 			
 			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
 				System.exit(0);
 			}
 			
