@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.bran.module.BookDeletePanel;
 import org.bran.module.BookInsertPanel;
 import org.bran.module.BookQueryPanel;
 /**
@@ -40,9 +41,15 @@ public class MainFrame extends JFrame {
 	private JMenuItem delete;
 	private JMenuItem update;
 	private JMenuItem readerDelete;
+	//图书查询界面
+	private JScrollPane bookQueryPanel;
+	//图书删除界面
+	private JScrollPane bookDeletePanel;
+	//图书添加界面
+	private JScrollPane bookInsertPanel;
 	public MainFrame(){
 		super("图书馆");
-		this.setSize(600, 400);
+		this.setSize(800, 600);
 		this.setLocationRelativeTo(getOwner());
 		this.getContentPane().add(new JPanel());
 		//创建系统菜单
@@ -56,15 +63,18 @@ public class MainFrame extends JFrame {
 		//创建查询菜单
 		query=new JMenu("查询");
 		bookQuery=new JMenuItem("图书查询");
+		/**
+		 * 【查询】注册监听器
+		 */
 		bookQuery.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				getContentPane().removeAll();
-				getContentPane().invalidate();
-				getContentPane().add(new JScrollPane(new BookQueryPanel()));
-				getContentPane().revalidate();
-				setVisible(true);
-				
+				if(bookQueryPanel==null){
+					bookQueryPanel=new JScrollPane(new BookQueryPanel());
+				}
+				setContentPane(bookQueryPanel);
+				invalidate();
+				validate();
 			}
 		});
 		readerQuery=new JMenuItem("读者查询");
@@ -81,11 +91,12 @@ public class MainFrame extends JFrame {
 		this.insert.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				getContentPane().removeAll();
-				getContentPane().invalidate();
-				getContentPane().add(new JScrollPane(new BookInsertPanel()));
-				getContentPane().revalidate();
-				setVisible(true);
+				if(bookInsertPanel==null){
+					bookInsertPanel=new JScrollPane(new BookInsertPanel());
+				}
+				setContentPane(bookInsertPanel);
+				invalidate();
+				validate();
 			}
 		});
 		delete=new JMenuItem("删除");
@@ -95,8 +106,12 @@ public class MainFrame extends JFrame {
 		delete.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				if(bookDeletePanel==null){
+					bookDeletePanel=new JScrollPane(new BookDeletePanel());
+				}
+				setContentPane(bookDeletePanel);	
+				invalidate();
+				validate();
 			}
 		});
 		update=new JMenuItem("更新");
@@ -110,7 +125,7 @@ public class MainFrame extends JFrame {
 				
 			}
 		});
-		readerDelete=new JMenuItem("读者删除");
+		readerDelete=new JMenuItem("读者修改");
 		/**
 		 * 【读者删除】注册监听器
 		 */

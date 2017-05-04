@@ -41,40 +41,40 @@ public class BookInsertPanel extends JPanel {
 		JPanel panel1=new JPanel(new GridLayout(10, 2));
 		//创建图书编号，书名,作者,出版社
 		bookId=new JTextField(20);
-		panel1.add(new JLabel("图书编号：",JLabel.CENTER));
+		panel1.add(new JLabel("图书编号：",JLabel.RIGHT));
 		panel1.add(bookId);
 		bookName=new JTextField(20);
-		panel1.add(new JLabel("图书名称：",JLabel.CENTER));
+		panel1.add(new JLabel("图书名称：",JLabel.RIGHT));
 		panel1.add(bookName);
 		author=new JTextField(20);
-		panel1.add(new JLabel("作者：",JLabel.CENTER));
+		panel1.add(new JLabel("作者：",JLabel.RIGHT));
 		panel1.add(author);
 		publish=new JTextField(20);
-		panel1.add(new JLabel("出版社：",JLabel.CENTER));
+		panel1.add(new JLabel("出版社：",JLabel.RIGHT));
 		panel1.add(publish);
 		//创建出版日期 
 		pubDate=new DatePanel();
-		panel1.add(new JLabel("出版日期：",JLabel.CENTER));
+		panel1.add(new JLabel("出版日期：",JLabel.RIGHT));
 		panel1.add(pubDate);
 		//创建类别
 		sort=new JComboBox<String>();
 		for(int i=0;i<bookSorts.length;i++){
 			sort.addItem(bookSorts[i]);
 		}
-		panel1.add(new JLabel("书籍类别",JLabel.CENTER));
+		panel1.add(new JLabel("书籍类别",JLabel.RIGHT));
 		panel1.add(sort);
 		//创建价格，页数，关键词,数量
 		price=new JTextField(20);
-		panel1.add(new JLabel("价格：",JLabel.CENTER));
+		panel1.add(new JLabel("价格：",JLabel.RIGHT));
 		panel1.add(price);
 		pageNum=new JTextField(20);
-		panel1.add(new JLabel("页数：",JLabel.CENTER));
+		panel1.add(new JLabel("页数：",JLabel.RIGHT));
 		panel1.add(pageNum);
 		keyWord=new JTextField(20);
-		panel1.add(new JLabel("关键词：",JLabel.CENTER));
+		panel1.add(new JLabel("关键词：",JLabel.RIGHT));
 		panel1.add(keyWord);
 		num=new JTextField(20);
-		panel1.add(new JLabel("数量 ：",JLabel.CENTER));
+		panel1.add(new JLabel("数量 ：",JLabel.RIGHT));
 		panel1.add(num);
 		//创建备注
 		JPanel panel2=new JPanel(new GridLayout(1, 2));

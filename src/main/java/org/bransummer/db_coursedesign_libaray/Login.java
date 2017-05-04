@@ -29,7 +29,8 @@ public class Login extends JFrame {
 	private JLabel nameLabel,pwdLabel;
 	//借阅者，管理员
 	private JRadioButton reader,admin;
-	
+	//注册界面
+	private ReaderRegistFrame registFrame;
 	public Login(){
 		super("登录界面");
 		this.setSize(300, 150);
@@ -37,7 +38,7 @@ public class Login extends JFrame {
 		Container container=this.getContentPane();
 		username=new JTextField(10);
 		password=new JTextField(10);
-		
+		registFrame=new ReaderRegistFrame();
 		/**
 		 * 
 		 */
@@ -49,7 +50,7 @@ public class Login extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				new ReaderRegistFrame();
+				registFrame.setVisible(true);
 			}
 		});
 		nameLabel=new JLabel("用户名:",JLabel.CENTER);

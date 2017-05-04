@@ -132,7 +132,7 @@ public class ReaderRegistFrame extends JFrame {
 			
 			public void windowClosing(WindowEvent e) {
 				// TODO Auto-generated method stub
-				System.exit(0);
+				setVisible(false);
 			}
 			
 			public void windowClosed(WindowEvent e) {
@@ -145,7 +145,7 @@ public class ReaderRegistFrame extends JFrame {
 				
 			}
 		});
-		this.setVisible(true);
+		this.setVisible(false);
 	}
 	
 }
