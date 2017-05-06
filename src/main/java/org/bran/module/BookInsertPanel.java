@@ -25,7 +25,7 @@ public class BookInsertPanel extends JPanel {
 	//编号，书名，作者，出版社，价格，页码，关键词，
 	private JTextField bookId,bookName,author,publish,price,pageNum,keyWord,num;
 	//书籍类别
-	private JComboBox sort;
+	private JComboBox<String> sort;
 	private String[] bookSorts={"小说","文学","传记","艺术","少儿","社会科学","科技","教辅","历史","医学"};
 	//出版日期手动输入，登记日期由系统录入
 	private DatePanel pubDate;

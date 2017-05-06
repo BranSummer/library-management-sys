@@ -21,8 +21,6 @@ public class BookUpdatePanel extends JPanel {
 	private JButton queryButton;
 	//更新按钮
 	private JButton updateButton;
-	//图书信息标签
-	private JLabel bookInfor;
 	//修改文本框(书名，出版社，作者，价格，关键词，)
 	private JTextField bookName,publishName,author,price,pageNum,keyWord;
 	//修改类别
@@ -51,6 +49,7 @@ public class BookUpdatePanel extends JPanel {
 		queryButton=new JButton("查询");
 		inputPanel.add(queryButton);
 		updateButton=new JButton("确认修改");
+		inputPanel.add(updateButton);
 		topPanel.add(inputPanel);
 		//修改项面板
 		JPanel bottomPanel=new JPanel();
