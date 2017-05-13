@@ -1,19 +1,23 @@
 package org.bran.module;
 
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import org.bran.db.DBOperation;
 /**
  * 
  *<p>Title: BookInsertPanel.java</p>
@@ -22,7 +26,7 @@ import javax.swing.JTextField;
  * @date 2017年5月1日
  */
 public class BookInsertPanel extends JPanel {
-	//编号，书名，作者，出版社，价格，页码，关键词，
+	//编号，书名，作者，出版社，价格，页码，关键词，数量
 	private JTextField bookId,bookName,author,publish,price,pageNum,keyWord,num;
 	//书籍类别
 	private JComboBox<String> sort;
@@ -34,7 +38,7 @@ public class BookInsertPanel extends JPanel {
 	//提交，重置按钮
 	private JButton submit,reset;
 
-	public BookInsertPanel(){
+	public BookInsertPanel(final DBOperation db){
 		super();
 		//布局
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -42,7 +46,7 @@ public class BookInsertPanel extends JPanel {
 		JPanel panel1=new JPanel(new GridLayout(10, 2));
 		//创建图书编号，书名,作者,出版社
 		bookId=new JTextField(20);
-		panel1.add(new JLabel("图书编号：",JLabel.RIGHT));
+		panel1.add(new JLabel("ISBN：",JLabel.RIGHT));
 		panel1.add(bookId);
 		bookName=new JTextField(20);
 		panel1.add(new JLabel("图书名称：",JLabel.RIGHT));
@@ -85,14 +89,63 @@ public class BookInsertPanel extends JPanel {
 		//创建提交按钮
 		JPanel panel3=new JPanel(new GridLayout(1,2));
 		submit=new JButton("提交");
+		/**
+		 * 【提交】按钮注册监听器,从输入文本域中获取信息，通过封装的DBOperation对象连接数据库，将数据插入到book表中，
+		 * 书籍的注册时间有系统获取，
+		 * 书籍编号由数据库的自增序列填充
+		 * 根据输入数量确定插入次数
+		 */
 		submit.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+				int bookNum=0;
+				float priceFloat=0;	
+				int pageNumInt=0;
+				Long now=new Date().getTime();
+				java.sql.Date dateNow=new java.sql.Date(now);
+				String sql="insert into book(ISBN,bookname,author,booksort,publishname,publishdate,price,pagenum,keywords,"
+						+ "registerdate,remarks) values(?,?,?,?,?,?,?,?,?,?,?)";
+				try{
+					//输入域类型转换
+					priceFloat=Float.parseFloat(price.getText());
+					bookNum=Integer.parseInt(num.getText());
+					pageNumInt=Integer.parseInt(pageNum.getText());
+					//预编译处理
+					PreparedStatement preStmt=db.getPreparedStatement(sql);
+					preStmt.setString(1, bookId.getText());
+					preStmt.setString(2, bookName.getText());
+					preStmt.setString(3, author.getText());
+					preStmt.setString(4, sort.getSelectedItem().toString());
+					preStmt.setString(5, publish.getText());
+					preStmt.setDate(6, pubDate.getDate());
+					preStmt.setFloat(7, priceFloat);
+					preStmt.setInt(8,pageNumInt);
+					preStmt.setString(9, keyWord.getText());
+					preStmt.setDate(10, dateNow);
+					preStmt.setString(11, remarks.getText());
+					
+					for(int i=0;i<bookNum;i++){
+						preStmt.addBatch();
+					}
+					int[] rows=preStmt.executeBatch();
+					if(rows.length==bookNum){
+						JOptionPane.showMessageDialog(null, "数据插入成功", "sucess", JOptionPane.OK_OPTION);
+					}
+				}catch(NumberFormatException e){
+					System.out.println("数字输入格式不正确！");
+					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, "请输入正确的数字格式", "error", JOptionPane.ERROR_MESSAGE);
+				} catch (SQLException e) {
+					System.out.println("数据库异常！");
+					e.printStackTrace();
+				}
 				
 			}
 		});
 		reset=new JButton("重置");
+		/**
+		 * 【重置】按钮清空所有文本域
+		 */
 		reset.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {

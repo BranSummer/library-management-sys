@@ -12,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.bran.db.DBOperation;
 import org.bran.module.BookDeletePanel;
 import org.bran.module.BookInsertPanel;
 import org.bran.module.BookQueryPanel;
@@ -50,12 +51,16 @@ public class MainFrame extends JFrame {
 	private JScrollPane bookInsertPanel;
 	//图书修改界面
 	private JScrollPane bookUpdatePanel;
+	//数据库连接
+	private DBOperation db;
 	public MainFrame(){
 		super("图书馆");
 		this.setSize(700, 500);
 		this.setLocationRelativeTo(getOwner());
 		this.getContentPane().add(new JPanel());
-		//创建系统菜单
+		//创建数据库连接
+		db=new DBOperation();
+		//创建系统菜单		
 		system=new JMenu("系统");
 		userManage=new JMenuItem("用户管理");
 		exit=new JMenuItem("退出");
@@ -73,7 +78,7 @@ public class MainFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(bookQueryPanel==null){
-					bookQueryPanel=new JScrollPane(new BookQueryPanel());
+					bookQueryPanel=new JScrollPane(new BookQueryPanel(db));
 				}
 				setContentPane(bookQueryPanel);
 				invalidate();
@@ -95,7 +100,7 @@ public class MainFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				if(bookInsertPanel==null){
-					bookInsertPanel=new JScrollPane(new BookInsertPanel());
+					bookInsertPanel=new JScrollPane(new BookInsertPanel(db));
 				}
 				setContentPane(bookInsertPanel);
 				invalidate();

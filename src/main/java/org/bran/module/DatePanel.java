@@ -1,13 +1,12 @@
 package org.bran.module;
 
-import java.awt.Component;
 import java.awt.FlowLayout;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Properties;
 
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,6 +40,19 @@ public class DatePanel extends JPanel {
 	}
 	public void setRight(){
 		this.setAlignmentX(RIGHT_ALIGNMENT);
+	}
+	/**
+	 * 
+	 *<p>Description:此方法用于返回在面板上选中的适用于数据库操作的Date对象 </p>
+	 * @return java.sql.Date类型的时间
+	 */
+	public Date getDate(){
+		java.util.Date selectedTime=(java.util.Date)datePicker.getModel().getValue();
+		if(selectedTime==null){
+			return null;
+		}
+		long time=selectedTime.getTime();
+		return new Date(time);
 	}
 	public static void main(String[] args) {
 		JFrame frame=new JFrame("test");

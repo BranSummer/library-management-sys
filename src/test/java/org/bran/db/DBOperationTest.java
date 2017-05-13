@@ -52,7 +52,11 @@ public class DBOperationTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		assertEquals("158       ", id);
+		assertEquals("158", id);
+	}
+	@Test
+	public void testGetPreparedStatement(){
+		
 	}
 
 }

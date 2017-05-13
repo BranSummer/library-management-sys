@@ -2,6 +2,7 @@ package org.bran.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,7 +23,7 @@ public class DBOperation {
 	public DBOperation(){
 		try{
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			String url="jdbc:sqlserver://127.0.0.1:1433;DatabaseName=libary";
+			String url="jdbc:sqlserver://127.0.0.1:1433;DatabaseName=library";
 			String user="sa";
 			String password="202150818";
 			connection=DriverManager.getConnection(url,user,password);
@@ -56,11 +57,28 @@ public class DBOperation {
 		statement=connection.createStatement();
 		return statement.executeQuery(sql);
 	}
+	/**
+	 * 
+	 *<p>Description: </p>
+	 * @param sql
+	 * @return 预编译处理对象
+	 * @throws SQLException
+	 */
+	public PreparedStatement getPreparedStatement(String sql) throws SQLException{
+		return connection.prepareStatement(sql);
+	}
+	/**
+	 * 
+	 *<p>Description:关闭数据库连接 </p>
+	 * @throws SQLException
+	 */
 	public void close() throws SQLException{
 		if(resultSet!=null){
 			resultSet.close();
 		}
-		statement.close();
+		if(statement!=null){
+			statement.close();
+		}
 		connection.close();
 	}
 }
