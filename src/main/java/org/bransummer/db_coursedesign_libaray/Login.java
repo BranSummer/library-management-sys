@@ -71,8 +71,10 @@ public class Login extends JFrame {
 					ResultSet rs=ps.executeQuery();
 					if(rs.next()){
 						new MainFrame();
+						setVisible(false);
 					}else{
 						JOptionPane.showMessageDialog(null, "账号不存在或者密码不正确！","failure", JOptionPane.OK_CANCEL_OPTION);
+						
 					}
 				} catch (SQLException e1) {
 					e1.printStackTrace();
