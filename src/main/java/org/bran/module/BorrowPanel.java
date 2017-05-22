@@ -2,7 +2,9 @@ package org.bran.module;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 /**
  * 
  *<p>Title: BorrowPanel.java</p>
@@ -17,5 +19,10 @@ public class BorrowPanel extends JPanel {
 	private JComboBox bookSort;
 	//文本框 搜索输入
 	private JTextField queryText;
+	//表格
+	private JTable table;
+	private DefaultTableModel model;
+	private String[] headers={"勾选","书号","书名","出版社","库存"};
+	private Object[][] cellData={{false,"A1011","HTTP权威指南","图灵","20"}};
 	
 }

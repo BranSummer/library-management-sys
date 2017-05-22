@@ -6,13 +6,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import org.bran.db.DBOperation;
 /**
  * 
  *<p>Title: Login.java</p>
@@ -29,8 +35,11 @@ public class Login extends JFrame {
 	private JLabel nameLabel,pwdLabel;
 	//借阅者，管理员
 	private JRadioButton reader,admin;
+	private ButtonGroup group;
 	//注册界面
 	private ReaderRegistFrame registFrame;
+	//数据库连接接口
+	private DBOperation db;
 	public Login(){
 		super("登录界面");
 		this.setSize(300, 150);
@@ -39,11 +48,47 @@ public class Login extends JFrame {
 		username=new JTextField(10);
 		password=new JTextField(10);
 		registFrame=new ReaderRegistFrame();
+		db=new DBOperation();
 		/**
 		 * 
 		 */
 		submit=new JButton("登录");
-		//TODO actionlistener
+		/**
+		 * 【注册】按钮注册监听器
+		 */
+		submit.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				String userStr=username.getText();
+				String pwdStr=password.getText();
+//				String selesction=group.getSelection().toString();
+				
+				String sql="use library select * from userTest where name=? and pwd=?";
+				try {
+					PreparedStatement ps=db.getPreparedStatement(sql);
+					ps.setString(1, userStr);
+					ps.setString(2, pwdStr);
+					ResultSet rs=ps.executeQuery();
+					if(rs.next()){
+						new MainFrame();
+					}else{
+						JOptionPane.showMessageDialog(null, "账号不存在或者密码不正确！","failure", JOptionPane.OK_CANCEL_OPTION);
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "数据库连接异常","error", JOptionPane.ERROR_MESSAGE);
+				}finally{
+					try {
+						db.close();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				
+				
+			}
+		});
 		regist=new JButton("注册");
 		//TODO actionlistener
 		regist.addActionListener(new ActionListener() {
@@ -58,7 +103,7 @@ public class Login extends JFrame {
 		//权限
 		reader=new JRadioButton("借阅者");
 		admin=new JRadioButton("管理员");
-		ButtonGroup group=new ButtonGroup();
+		group=new ButtonGroup();
 		group.add(reader);
 		group.add(admin);
 		container.setLayout(new GridLayout(4,2));
