@@ -70,7 +70,7 @@ public class Login extends JFrame {
 					ps.setString(2, pwdStr);
 					ResultSet rs=ps.executeQuery();
 					if(rs.next()){
-						new MainFrame();
+						new MainFrame(db);
 						setVisible(false);
 					}else{
 						JOptionPane.showMessageDialog(null, "账号不存在或者密码不正确！","failure", JOptionPane.OK_CANCEL_OPTION);
@@ -79,13 +79,6 @@ public class Login extends JFrame {
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "数据库连接异常","error", JOptionPane.ERROR_MESSAGE);
-				}finally{
-					try {
-						db.close();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
 				}
 				
 				

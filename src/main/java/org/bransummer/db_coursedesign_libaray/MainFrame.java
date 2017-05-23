@@ -53,13 +53,11 @@ public class MainFrame extends JFrame {
 	private JScrollPane bookUpdatePanel;
 	//数据库连接
 	private DBOperation db;
-	public MainFrame(){
+	public MainFrame(final DBOperation db){
 		super("图书馆");
 		this.setSize(700, 500);
 		this.setLocationRelativeTo(getOwner());
 		this.getContentPane().add(new JPanel());
-		//创建数据库连接
-		db=new DBOperation();
 		//创建系统菜单		
 		system=new JMenu("系统");
 		userManage=new JMenuItem("用户管理");
@@ -202,6 +200,6 @@ public class MainFrame extends JFrame {
 		this.setVisible(true);
 	}
 	public static void main(String[] args) {
-		new MainFrame();
+		new MainFrame(new DBOperation());
 	}
 }
