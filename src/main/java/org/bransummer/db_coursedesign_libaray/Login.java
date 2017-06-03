@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
@@ -28,7 +29,8 @@ import org.bran.db.DBOperation;
  */
 public class Login extends JFrame {
 	//用户名，密码输入域
-	private JTextField username,password;
+	private JTextField username;
+	private JPasswordField password;
 	//提交，注册按钮
 	private JButton submit,regist;
 	//文本标签(用户名，密码)
@@ -46,7 +48,7 @@ public class Login extends JFrame {
 		this.setLocationRelativeTo(getOwner());
 		Container container=this.getContentPane();
 		username=new JTextField(10);
-		password=new JTextField(10);
+		password=new JPasswordField(10);
 		registFrame=new ReaderRegistFrame();
 		db=new DBOperation();
 		/**

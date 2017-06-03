@@ -39,7 +39,7 @@ public class BookUpdatePanel extends JPanel {
 		//top面板，放置按钮及查询文本框
 		JPanel topPanel=new JPanel();
 		topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-		topPanel.add(new JLabel("输入书号修改需要查询的图书"));
+		topPanel.add(new JLabel("输入ISBN修改需要查询的图书"));
 		//按钮及查询文本框面板
 		JPanel inputPanel=new JPanel();
 		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.X_AXIS));
