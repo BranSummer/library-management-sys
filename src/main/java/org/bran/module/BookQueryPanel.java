@@ -43,7 +43,7 @@ public class BookQueryPanel extends JPanel {
 	
 	public BookQueryPanel(final DBOperation db){
 		super();
-		//创建分割面板
+		//创建分割面板 水平分割
 		JSplitPane sp=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		this.add(sp);
 		//创建默认表格模型

@@ -17,6 +17,7 @@ import org.bran.module.BookDeletePanel;
 import org.bran.module.BookInsertPanel;
 import org.bran.module.BookQueryPanel;
 import org.bran.module.BookUpdatePanel;
+import org.bran.module.MyChartPanel;
 /**
  * 
  *<p>Title: MainFrame.java</p>
@@ -37,6 +38,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem bookQuery;
 	private JMenuItem readerQuery;
 	private JMenuItem borrowQuery;
+	private JMenuItem chart;
 	//数据操作
 	private JMenu edit;
 	private JMenuItem insert;
@@ -51,11 +53,13 @@ public class MainFrame extends JFrame {
 	private JScrollPane bookInsertPanel;
 	//图书修改界面
 	private JScrollPane bookUpdatePanel;
+	//图表面板
+	private MyChartPanel myChartPanel;
 	//数据库连接
 	private DBOperation db;
 	public MainFrame(final DBOperation db){
 		super("图书馆");
-		this.setSize(700, 500);
+		this.setSize(800, 500);
 		this.setLocationRelativeTo(getOwner());
 		this.getContentPane().add(new JPanel());
 		//创建系统菜单		
@@ -85,9 +89,26 @@ public class MainFrame extends JFrame {
 		});
 		readerQuery=new JMenuItem("读者查询");
 		borrowQuery=new JMenuItem("借阅查询");
+		chart=new JMenuItem("图表");
+		/**
+		 * 【图表】注册监听器
+		 */
+		chart.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				if(myChartPanel==null){
+					myChartPanel=new MyChartPanel();
+				}
+				setContentPane(myChartPanel);
+				invalidate();
+				validate();
+				
+			}
+		});
 		query.add(bookQuery);
 		query.add(readerQuery);
 		query.add(borrowQuery);
+		query.add(chart);
 		//创建数据操作菜单
 		edit=new JMenu("编辑");
 		insert=new JMenuItem("添加");
