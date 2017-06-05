@@ -2,6 +2,8 @@ package org.bransummer.db_coursedesign_libaray;
 
 import java.awt.Container;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -17,6 +19,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import org.bran.db.DBOperation;
 /**
  * 
  *<p>Title: ReaderRegistFrame.java</p>
@@ -38,7 +42,7 @@ public class ReaderRegistFrame extends JFrame {
 	//注册，取消按钮
 	private JButton submit,cancel;
 	
-	 ReaderRegistFrame(){
+	 ReaderRegistFrame(DBOperation db){
 		super("注册读者号");
 		this.setSize(400, 400);
 		this.setLocationRelativeTo(getOwner());
@@ -101,7 +105,28 @@ public class ReaderRegistFrame extends JFrame {
 		//注册，取消按钮
 		JPanel panel3=new JPanel(new GridLayout(1, 2));
 		submit=new JButton("提交");
+		/**
+		 * 【提交】注册监听器
+		 */
+		submit.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				
+			}
+		});
+		
 		cancel=new JButton("取消");
+		/**
+		 * 【取消】注册监听器
+		 */
+		cancel.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				
+			}
+		});
 		panel3.add(submit);
 		panel3.add(cancel);
 		//TODO 注册监听器

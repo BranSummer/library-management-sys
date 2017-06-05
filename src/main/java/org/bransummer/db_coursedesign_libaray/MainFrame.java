@@ -1,5 +1,6 @@
 package org.bransummer.db_coursedesign_libaray;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -97,7 +98,7 @@ public class MainFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				if(myChartPanel==null){
-					myChartPanel=new MyChartPanel();
+					myChartPanel=new MyChartPanel(db);
 				}
 				setContentPane(myChartPanel);
 				invalidate();
@@ -151,6 +152,7 @@ public class MainFrame extends JFrame {
 				// TODO Auto-generated method stub
 				if(bookUpdatePanel==null){
 					bookUpdatePanel=new JScrollPane(new BookUpdatePanel());
+					bookUpdatePanel.setPreferredSize(new Dimension(600, 400));
 				}
 				setContentPane(bookUpdatePanel);
 				invalidate();
@@ -218,6 +220,7 @@ public class MainFrame extends JFrame {
 				
 			}
 		});	
+		
 		this.setVisible(true);
 	}
 	public static void main(String[] args) {

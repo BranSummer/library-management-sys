@@ -49,7 +49,7 @@ public class Login extends JFrame {
 		Container container=this.getContentPane();
 		username=new JTextField(10);
 		password=new JPasswordField(10);
-		registFrame=new ReaderRegistFrame();
+		registFrame=new ReaderRegistFrame(db);
 		db=new DBOperation();
 		/**
 		 * 

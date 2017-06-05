@@ -1,8 +1,9 @@
 package org.bran.module;
 
 import java.awt.Font;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -10,12 +11,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 
+import org.bran.db.DBOperation;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.data.general.DefaultPieDataset;
@@ -31,11 +30,11 @@ public class MyChartPanel extends JPanel {
 	private ChartPanel chartPanel;
 	//列表框
 	private JList list;
-	String[] elements={"图形类型饼图","读者类型图","借阅条形图"};
+	String[] elements={"图书类型饼图","读者类型图","借阅条形图"};
 	/**
 	 * constructor
 	 */
-	public MyChartPanel(){
+	public MyChartPanel(DBOperation db){
 		super();
 		//分割面板  竖直分割
 		JSplitPane sp=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
@@ -48,11 +47,21 @@ public class MyChartPanel extends JPanel {
 		
 		//创建图表面板
 		//创建一个默认的饼图
+		ResultSet rs=null;
 		DefaultPieDataset pdSet=new DefaultPieDataset();
-		pdSet.setValue("计算机", 50);
-		pdSet.setValue("小说", 80);
-		pdSet.setValue("文学", 30);
-		pdSet.setValue("艺术", 20);
+//		pdSet.setValue("计算机", 50);
+//		pdSet.setValue("小说", 80);
+//		pdSet.setValue("文学", 30);
+//		pdSet.setValue("艺术", 20);
+		try {
+			rs=db.executeQuery("select booksort,count(booksort) as count from bookTest group by booksort");
+			while(rs.next()){
+				pdSet.setValue(rs.getString("booksort"), rs.getInt("count"));
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
 		
 		JFreeChart chart=ChartFactory.createPieChart("demo", pdSet, true,true,false);
 		PiePlot plot=(PiePlot) chart.getPlot();
@@ -69,7 +78,7 @@ public class MyChartPanel extends JPanel {
 	public static void main(String[] args) {
 		JFrame test=new JFrame("test");
 		test.setSize(600, 400);
-		test.getContentPane().add(new MyChartPanel());
+		test.getContentPane().add(new MyChartPanel(new DBOperation()));
 		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		test.setVisible(true);
 	}

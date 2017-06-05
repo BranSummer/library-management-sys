@@ -1,5 +1,7 @@
 package org.bran.module;
 
+import java.awt.Dimension;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,6 +35,8 @@ public class BookUpdatePanel extends JPanel {
 	 */
 	public BookUpdatePanel(){
 		super();
+		//在设置JPanel大小的时候,要用JPanel.setPreferredSize()这个方法才行
+		
 		//创建分割面板
 		JSplitPane sp=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		this.add(sp);
