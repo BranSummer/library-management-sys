@@ -30,7 +30,7 @@ public class BookInsertPanel extends JPanel {
 	private JTextField bookId,bookName,author,publish,price,pageNum,keyWord,num;
 	//书籍类别
 	private JComboBox<String> sort;
-	private String[] bookSorts={"小说","文学","传记","艺术","少儿","社会科学","科技","教辅","历史","医学"};
+	private String[] bookSorts={"小说","文学","传记","艺术","少儿","社会科学","计算机","教辅","历史","医学"};
 	//出版日期手动输入，登记日期由系统录入
 	private DatePanel pubDate;
 	//备注
@@ -134,7 +134,7 @@ public class BookInsertPanel extends JPanel {
 				}catch(NumberFormatException e){
 					System.out.println("数字输入格式不正确！");
 					e.printStackTrace();
-					JOptionPane.showMessageDialog(null, "请输入正确的数字格式", "error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "请输入正确的数字格式", "error", JOptionPane.CANCEL_OPTION);
 				} catch (SQLException e) {
 					System.out.println("数据库异常！");
 					e.printStackTrace();

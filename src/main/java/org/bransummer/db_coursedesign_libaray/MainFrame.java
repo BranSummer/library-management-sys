@@ -19,6 +19,7 @@ import org.bran.module.BookInsertPanel;
 import org.bran.module.BookQueryPanel;
 import org.bran.module.BookUpdatePanel;
 import org.bran.module.MyChartPanel;
+import org.bran.module.ReaderQueryPanel;
 /**
  * 
  *<p>Title: MainFrame.java</p>
@@ -56,6 +57,8 @@ public class MainFrame extends JFrame {
 	private JScrollPane bookUpdatePanel;
 	//图表面板
 	private MyChartPanel myChartPanel;
+	//读者查询面板
+	private JScrollPane readerQueryPanel;
 	//数据库连接
 	private DBOperation db;
 	public MainFrame(final DBOperation db){
@@ -65,8 +68,32 @@ public class MainFrame extends JFrame {
 		this.getContentPane().add(new JPanel());
 		//创建系统菜单		
 		system=new JMenu("系统");
-		userManage=new JMenuItem("用户管理");
+		userManage=new JMenuItem("用户查询");
+		userManage.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				if(readerQueryPanel==null){
+					readerQueryPanel=new JScrollPane(new ReaderQueryPanel(db));
+				}
+				setContentPane(readerQueryPanel);
+				invalidate();
+				validate();
+				
+			}
+		});
 		exit=new JMenuItem("退出");
+		/**
+		 * 【退出】注册监听器
+		 */
+		exit.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				new Login();
+				setVisible(false);
+				System.gc();
+				
+			}
+		});
 		borrow=new JMenuItem("借阅");
 		system.add(userManage);
 		system.add(exit);
@@ -135,7 +162,7 @@ public class MainFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(bookDeletePanel==null){
-					bookDeletePanel=new JScrollPane(new BookDeletePanel());
+					bookDeletePanel=new JScrollPane(new BookDeletePanel(db));
 				}
 				setContentPane(bookDeletePanel);	
 				invalidate();

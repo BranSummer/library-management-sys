@@ -1,5 +1,6 @@
 package org.bran.db;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -57,6 +58,7 @@ public class DBOperation {
 		statement=connection.createStatement();
 		return statement.executeQuery(sql);
 	}
+	
 	/**
 	 * 
 	 *<p>Description: </p>
@@ -66,6 +68,16 @@ public class DBOperation {
 	 */
 	public PreparedStatement getPreparedStatement(String sql) throws SQLException{
 		return connection.prepareStatement(sql);
+	}
+	/**
+	 * 
+	 *<p>Description:用来执行存储过程 </p>
+	 * @param sql
+	 * @return CallableStatement对象
+	 * @throws SQLException
+	 */
+	public CallableStatement getCallableStatement(String sql) throws SQLException{
+		return connection.prepareCall(sql);
 	}
 	/**
 	 * 

@@ -49,21 +49,23 @@ public class Login extends JFrame {
 		Container container=this.getContentPane();
 		username=new JTextField(10);
 		password=new JPasswordField(10);
-		registFrame=new ReaderRegistFrame(db);
 		db=new DBOperation();
+		registFrame=new ReaderRegistFrame(db);
+		
 		/**
 		 * 
 		 */
 		submit=new JButton("登录");
 		/**
-		 * 【注册】按钮注册监听器
+		 * 【登录】按钮注册监听器
 		 */
 		submit.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
 				String userStr=username.getText();
+				@SuppressWarnings("deprecation")
 				String pwdStr=password.getText();
-//				String selesction=group.getSelection().toString();
+				String selesction=group.getSelection().toString();
 				
 				String sql="use library select * from userTest where name=? and pwd=?";
 				try {
@@ -91,7 +93,7 @@ public class Login extends JFrame {
 		regist.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				
 				registFrame.setVisible(true);
 			}
 		});

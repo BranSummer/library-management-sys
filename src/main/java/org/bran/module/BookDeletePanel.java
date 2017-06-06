@@ -1,10 +1,14 @@
 package org.bran.module;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javax.swing.BoxLayout;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -12,7 +16,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+
+import org.bran.db.DBOperation;
 /**
  * 
  *<p>Title: BookDeletePanel.java</p>
@@ -28,14 +33,14 @@ public class BookDeletePanel extends JPanel {
 	//表格
 	private JTable table;
 	private DefaultTableModel model;
-	private String[] headers={"勾选","书号","书名","出版社","库存"};
-	private Object[][] cellData={{false,"A1011","HTTP权威指南","图灵","20"}};
+	private String[] headers={"勾选","书号","ISBN","书名","出版社"};
+	private Object[][] cellData={{false,"","","",""}};
 	//勾选复选框
 	private JCheckBox[] checks;
 	/**
 	 * Create the panel.
 	 */
-	public BookDeletePanel() {
+	public BookDeletePanel(final DBOperation db) {
 		super();
 		//分割面板
 		JSplitPane sp=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -45,7 +50,7 @@ public class BookDeletePanel extends JPanel {
 		
 		
 		//表格
-		DefaultTableModel model=new DefaultTableModel(cellData,headers){
+		final DefaultTableModel model=new DefaultTableModel(cellData,headers){
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// TODO Auto-generated method stub
@@ -60,7 +65,7 @@ public class BookDeletePanel extends JPanel {
                     case 0:
                         return Boolean.class;
                     case 1:
-                        return String.class;
+                        return Integer.class;
                     case 2:
                         return String.class;
                     case 3:
@@ -80,7 +85,7 @@ public class BookDeletePanel extends JPanel {
 		//输入区
 		JPanel panel1=new JPanel();
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-		panel1.add(new JLabel("输入书号、书名、出版社查询书籍并选中删除书籍",JLabel.CENTER));
+		panel1.add(new JLabel("输入ISBN、书名、出版社查询书籍并选中删除书籍",JLabel.CENTER));
 		JPanel minPanel1=new JPanel();
 		minPanel1.setLayout(new BoxLayout(minPanel1, BoxLayout.X_AXIS));
 		minPanel1.add(new JLabel("查询:"));
@@ -88,6 +93,47 @@ public class BookDeletePanel extends JPanel {
 		minPanel1.add(input);
 		delete=new JButton("删除");
 		submit=new JButton("查询");
+		/**
+		 * 【查询】注册监听器
+		 */
+		submit.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				String inputText=input.getText();
+				int bookId=0;
+				model.setRowCount(1);
+				try{
+					bookId=Integer.parseInt(inputText);
+				}catch(NumberFormatException e1){
+					bookId=0;
+				}
+				inputText="%"+inputText+"%";
+				ResultSet rs=null;
+				PreparedStatement preStmt=null;
+				String sql="select bookid,bookname,ISBN,publishName from book where bookid=? or bookname like ? or ISBN like ?";
+				try {
+					preStmt=db.getPreparedStatement(sql);
+					preStmt.setInt(1, bookId);
+					preStmt.setString(2, inputText);
+					preStmt.setString(3, inputText);
+					
+					rs=preStmt.executeQuery();
+					for(int i=0;rs.next();i++){
+						model.setValueAt(false, i, 0);
+						model.setValueAt(rs.getString("bookId"), i,1);
+						model.setValueAt(rs.getString("ISBN"), i, 2);
+						model.setValueAt(rs.getString("bookName"), i, 3);
+						model.setValueAt(rs.getString("publishName"), i, 4);
+						
+						model.addRow(cellData);
+					}
+				} catch (SQLException e) {
+					
+					e.printStackTrace();
+				}
+				
+			}
+		});
 		minPanel1.add(submit);
 		minPanel1.add(delete);
 		panel1.add(minPanel1);
