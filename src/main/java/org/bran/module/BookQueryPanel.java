@@ -38,8 +38,8 @@ public class BookQueryPanel extends JPanel {
 	//表格
 	private JTable table;
 	private DefaultTableModel model;
-	private String[] headers={"书号","书名","书籍类别","作者","出版社","出版日期","价格","页数","关键词","登记日期","备注"};
-	private Object[][] cellData={{"","","","","","","","","","",""}};
+	private String[] headers={"书号","书名","书籍类别","作者","出版社","出版日期","价格","页数","关键词","登记日期","备注","状态"};
+	private Object[][] cellData={{"","","","","","","","","","","",""}};
 	
 	public BookQueryPanel(final DBOperation db){
 		super();
@@ -67,7 +67,7 @@ public class BookQueryPanel extends JPanel {
 		JPanel minPanel1=new JPanel();
 		minPanel1.setLayout(new BoxLayout(minPanel1, BoxLayout.X_AXIS));
 		minPanel1.add(new JLabel("查询内容:"));
-		query=new JTextField(20);
+		query=new JTextField(30);
 		minPanel1.add(query);
 		queryb=new JButton("查询");
 		minPanel1.add(queryb);	
@@ -93,7 +93,7 @@ public class BookQueryPanel extends JPanel {
 						if(preTime.compareTo(nexTime)>0){
 							JOptionPane.showMessageDialog(null, "请输入正确的时间", "error", JOptionPane.ERROR_MESSAGE);
 						}else{
-							String sql="use library select book.bookid,bookname,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks from book where (publishdate between ? and ?) and ISBN like ? or bookname like  ? or author like ?";
+							String sql="use library select book.bookid,bookname,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks ,status from book where (publishdate between ? and ?) and ISBN like ? or bookname like  ? or author like ?";
 							preStmt=db.getPreparedStatement(sql);
 							preStmt.setDate(1, preTime);
 							preStmt.setDate(2, nexTime);
@@ -102,21 +102,21 @@ public class BookQueryPanel extends JPanel {
 							preStmt.setString(5, content);
 						}
 					}else if(preTime==null&&nexTime==null){
-						String sql="select bookid,bookname,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks from book where ISBN like ? or bookname like ? or author like ?";
+						String sql="select bookid,bookname,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks ,status from book where ISBN like ? or bookname like ? or author like ?";
 						preStmt=db.getPreparedStatement(sql);
 						preStmt.setString(1, content);
 						preStmt.setString(2, content);
 						preStmt.setString(3, content);
 						
 					}else if(preTime!=null&&nexTime==null){
-						String sql="select bookid,bookname,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks from book where publishdate > ? and ISBN like ? or bookname like ? or author like ?";
+						String sql="select bookid,bookname,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks,status from book where publishdate > ? and ISBN like ? or bookname like ? or author like ?";
 						preStmt=db.getPreparedStatement(sql);
 						preStmt.setDate(1, preTime);
 						preStmt.setString(2, content);
 						preStmt.setString(3, content);
 						preStmt.setString(4, content);
 					}else if(preTime==null&&nexTime!=null){
-						String sql="select bookid,bookname,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks from book where publishdate < ? and ISBN like ? or bookname like ? or author like ?";
+						String sql="select bookid,bookname,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks,status from book where publishdate < ? and ISBN like ? or bookname like ? or author like ?";
 						preStmt=db.getPreparedStatement(sql);
 						preStmt.setDate(1, nexTime);
 						preStmt.setString(2, content);
@@ -138,6 +138,7 @@ public class BookQueryPanel extends JPanel {
 						model.setValueAt(rs.getString("keywords"), i, 8);
 						model.setValueAt(rs.getString("registerdate"), i, 9);
 						model.setValueAt(rs.getString("remarks"), i, 10);
+						model.setValueAt(rs.getString("status"), i, 11);
 						model.addRow(cellData);
 					}
 				}catch(SQLException arg){

@@ -26,7 +26,7 @@ import org.bran.db.DBOperation;
  * @author BranSummer
  * @date 2017年5月4日
  */
-public class BookDeletePanel extends JPanel {
+public class BookDeletePanelV1 extends JPanel {
 	//输入文本框
 	private JTextField input;
 	//按钮
@@ -35,13 +35,13 @@ public class BookDeletePanel extends JPanel {
 	private JTable table;
 	private DefaultTableModel model;
 	private String[] headers={"勾选","书号","ISBN","书名","出版社"};
-	private Object[][] cellData={{"","","","",""}};
+	private Object[][] cellData={{false,"","","",""}};
 	//勾选复选框
 	private JCheckBox[] checks;
 	/**
 	 * Create the panel.
 	 */
-	public BookDeletePanel(final DBOperation db) {
+	public BookDeletePanelV1(final DBOperation db) {
 		super();
 		//分割面板
 		JSplitPane sp=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
@@ -68,11 +68,12 @@ public class BookDeletePanel extends JPanel {
                 }else return super.getClass();
             }
 			
+			
 		};
 			
 		table=new JTable(model);
 		JScrollPane scroll=new JScrollPane();
-		//显示表格
+		//显示表头
 		scroll.setViewportView(table);
 		//输入区
 		JPanel panel1=new JPanel();

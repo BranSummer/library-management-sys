@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.bran.db.DBOperation;
-import org.bran.module.BookDeletePanel;
+import org.bran.module.BookDeletePanelV1;
 import org.bran.module.BookInsertPanel;
 import org.bran.module.BookQueryPanel;
 import org.bran.module.BookUpdatePanel;
@@ -35,6 +35,7 @@ public class MainFrame extends JFrame {
 	private JMenuItem userManage;
 	private JMenuItem exit;
 	private JMenuItem borrow;
+	private JMenuItem returnBook;
 	//查询
 	private JMenu query;
 	private JMenuItem bookQuery;
@@ -95,9 +96,11 @@ public class MainFrame extends JFrame {
 			}
 		});
 		borrow=new JMenuItem("借阅");
+		returnBook=new JMenuItem("还书");
 		system.add(userManage);
 		system.add(exit);
 		system.add(borrow);
+		system.add(returnBook);
 		//创建查询菜单
 		query=new JMenu("查询");
 		bookQuery=new JMenuItem("图书查询");
@@ -162,7 +165,7 @@ public class MainFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(bookDeletePanel==null){
-					bookDeletePanel=new JScrollPane(new BookDeletePanel(db));
+					bookDeletePanel=new JScrollPane(new BookDeletePanelV1(db));
 				}
 				setContentPane(bookDeletePanel);	
 				invalidate();
@@ -178,7 +181,7 @@ public class MainFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				if(bookUpdatePanel==null){
-					bookUpdatePanel=new JScrollPane(new BookUpdatePanel());
+					bookUpdatePanel=new JScrollPane(new BookUpdatePanel(db));
 					bookUpdatePanel.setPreferredSize(new Dimension(600, 400));
 				}
 				setContentPane(bookUpdatePanel);

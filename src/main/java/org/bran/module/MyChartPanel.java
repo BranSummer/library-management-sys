@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.bran.db.DBOperation;
 import org.jfree.chart.ChartFactory;
@@ -43,6 +45,13 @@ public class MyChartPanel extends JPanel {
 		JScrollPane leftPanel=new JScrollPane();	
 		list=new JList<String>(elements);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		list.addListSelectionListener(new ListSelectionListener() {
+			
+			public void valueChanged(ListSelectionEvent arg0) {
+				//TODO
+				
+			}
+		});
 		leftPanel.setViewportView(list);
 		
 		//创建图表面板

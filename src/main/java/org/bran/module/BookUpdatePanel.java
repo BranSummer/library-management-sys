@@ -1,11 +1,16 @@
 package org.bran.module;
 
-import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -17,6 +22,8 @@ import javax.swing.JTextArea;
  * @date 2017年5月4日
  */
 import javax.swing.JTextField;
+
+import org.bran.db.DBOperation;
 public class BookUpdatePanel extends JPanel {
 	//查询文本框，查询按钮
 	private JTextField queryText;
@@ -27,13 +34,14 @@ public class BookUpdatePanel extends JPanel {
 	private JTextField bookName,publishName,author,price,pageNum,keyWord;
 	//修改类别
 	private JComboBox<String> sort;
-	private String[] bookSorts={"小说","文学","传记","艺术","少儿","社会科学","科技","教辅","历史","医学"};
+	private String[] bookSorts={"小说","文学","传记","艺术","少儿","社会科学","计算机","教辅","历史","医学"};
+	private JLabel sortLabel;
 	//修改备注
 	private JTextArea remarks;
 	/**
 	 * constructor
 	 */
-	public BookUpdatePanel(){
+	public BookUpdatePanel(final DBOperation db){
 		super();
 		//在设置JPanel大小的时候,要用JPanel.setPreferredSize()这个方法才行
 		
@@ -47,12 +55,72 @@ public class BookUpdatePanel extends JPanel {
 		//按钮及查询文本框面板
 		JPanel inputPanel=new JPanel();
 		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.X_AXIS));
-		inputPanel.add(new JLabel("请输入书号："));
-		queryText=new JTextField();
+		inputPanel.add(new JLabel("请输入ISBN："));
+		queryText=new JTextField(30);
 		inputPanel.add(queryText);
 		queryButton=new JButton("查询");
+		queryButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				String ISBN=queryText.getText();
+				ResultSet rs=null;
+				PreparedStatement pStmt=null;
+				
+				try {
+					String sql="select bookname,publishname,author,price,booksort,remarks from book where ISBN=?";
+					pStmt=db.getPreparedStatement(sql);
+					pStmt.setString(1, ISBN);
+					
+					rs=pStmt.executeQuery();
+					if(rs.next()){
+						bookName.setText(rs.getString("bookName"));
+						publishName.setText(rs.getString("publishName"));
+						author.setText(rs.getString("author"));
+						sortLabel.setText(rs.getString("bookSort"));
+						price.setText(rs.getString("price"));
+						remarks.setText(rs.getString("remarks"));
+						JOptionPane.showMessageDialog(null, "查询完成\n点击按钮确认修改","OK", JOptionPane.OK_CANCEL_OPTION);
+					}else JOptionPane.showMessageDialog(null, "未查询到信息","failure", JOptionPane.OK_CANCEL_OPTION);
+					rs.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		inputPanel.add(queryButton);
 		updateButton=new JButton("确认修改");
+		updateButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				String ISBN=queryText.getText();
+				String nameText=bookName.getText();
+				String publishText=publishName.getText();
+				String authorText=author.getText();
+				String sortText=sort.getSelectedItem().toString();
+				 float priceFloat=Float.parseFloat(price.getText());
+				String remarksText=remarks.getText();
+				
+				String sql="update book set bookname=?,publishName=?,author=?,booksort=?,price=?,remarks=? where ISBN=?";
+				
+				
+				PreparedStatement pStmt=null;
+				try {
+					pStmt=db.getPreparedStatement(sql);
+					pStmt.setString(1,nameText);
+					pStmt.setString(2, publishText);
+					pStmt.setString(3, authorText);
+					pStmt.setString(4, sortText);
+					pStmt.setDouble(5, priceFloat);
+					pStmt.setString(6, remarksText);
+					pStmt.setString(7, ISBN);
+					pStmt.executeUpdate();
+					JOptionPane.showMessageDialog(null, "修改成功","OK", JOptionPane.OK_CANCEL_OPTION);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 		inputPanel.add(updateButton);
 		topPanel.add(inputPanel);
 		//修改项面板
@@ -85,12 +153,14 @@ public class BookUpdatePanel extends JPanel {
 		//类别修改面板
 		JPanel panel5=new JPanel();
 		panel5.setLayout(new BoxLayout(panel5, BoxLayout.X_AXIS));
+		sortLabel=new JLabel("");
 		panel5.add(new JLabel("类　别："));
 		sort=new JComboBox<String>();
 		for(int i=0;i<bookSorts.length;i++){
 			sort.addItem(bookSorts[i]);
 		}
 		panel5.add(sort);
+		panel5.add(sortLabel);
 		//备注修改面板
 		JPanel panel6=new JPanel();
 		panel6.setLayout(new BoxLayout(panel6, BoxLayout.X_AXIS));
