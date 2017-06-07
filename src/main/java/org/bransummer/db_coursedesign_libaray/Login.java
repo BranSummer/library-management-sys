@@ -63,18 +63,25 @@ public class Login extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				String userStr=username.getText();
+				int userId=0;
+				try{
+					userId=Integer.parseInt(userStr);
+				}catch(NumberFormatException e1){
+					userId=0;
+				}
 				@SuppressWarnings("deprecation")
 				String pwdStr=password.getText();
 				String selesction=group.getSelection().toString();
 				
-				String sql="use library select * from userTest where name=? and pwd=?";
+				String sql="use library select * from reader where readerid=? and password=?";
 				try {
 					PreparedStatement ps=db.getPreparedStatement(sql);
-					ps.setString(1, userStr);
+					ps.setInt(1, userId);
 					ps.setString(2, pwdStr);
 					ResultSet rs=ps.executeQuery();
 					if(rs.next()){
 						new MainFrame(db);
+						rs.close();
 						setVisible(false);
 					}else{
 						JOptionPane.showMessageDialog(null, "账号不存在或者密码不正确！","failure", JOptionPane.OK_CANCEL_OPTION);
@@ -106,6 +113,7 @@ public class Login extends JFrame {
 		group=new ButtonGroup();
 		group.add(reader);
 		group.add(admin);
+		reader.setSelected(true);
 		container.setLayout(new GridLayout(4,2));
 		
 		container.add(nameLabel);

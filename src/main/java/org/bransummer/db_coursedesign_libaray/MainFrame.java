@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.bran.db.DBOperation;
-import org.bran.module.BookDeletePanelV1;
+import org.bran.module.BookDeletePanel;
 import org.bran.module.BookInsertPanel;
 import org.bran.module.BookQueryPanel;
 import org.bran.module.BookUpdatePanel;
@@ -118,7 +118,7 @@ public class MainFrame extends JFrame {
 				validate();
 			}
 		});
-		readerQuery=new JMenuItem("读者查询");
+//		readerQuery=new JMenuItem("读者查询");
 		borrowQuery=new JMenuItem("借阅查询");
 		chart=new JMenuItem("图表");
 		/**
@@ -137,7 +137,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 		query.add(bookQuery);
-		query.add(readerQuery);
+//		query.add(readerQuery);
 		query.add(borrowQuery);
 		query.add(chart);
 		//创建数据操作菜单
@@ -165,7 +165,7 @@ public class MainFrame extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				if(bookDeletePanel==null){
-					bookDeletePanel=new JScrollPane(new BookDeletePanelV1(db));
+					bookDeletePanel=new JScrollPane(new BookDeletePanel(db));
 				}
 				setContentPane(bookDeletePanel);	
 				invalidate();
@@ -189,7 +189,7 @@ public class MainFrame extends JFrame {
 				validate();
 			}
 		});
-		readerDelete=new JMenuItem("读者修改");
+		readerDelete=new JMenuItem("读者删除");
 		/**
 		 * 【读者删除】注册监听器
 		 */
@@ -203,7 +203,7 @@ public class MainFrame extends JFrame {
 		edit.add(insert);
 		edit.add(delete);
 		edit.add(update);
-		edit.add(readerDelete);
+//		edit.add(readerDelete);
 		
 		menuBar=new JMenuBar();
 		menuBar.add(system);

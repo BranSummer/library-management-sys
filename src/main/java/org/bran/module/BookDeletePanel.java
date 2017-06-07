@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -35,7 +36,8 @@ public class BookDeletePanel extends JPanel {
 	private JTable table;
 	private DefaultTableModel model;
 	private String[] headers={"勾选","书号","ISBN","书名","出版社"};
-	private Object[][] cellData={{"","","","",""}};
+	private Object[][] cellData={{false,"","","",""}};
+	private Object[] rowData={false,"","","",""};
 	//勾选复选框
 	private JCheckBox[] checks;
 	/**
@@ -77,7 +79,7 @@ public class BookDeletePanel extends JPanel {
 		//输入区
 		JPanel panel1=new JPanel();
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-		panel1.add(new JLabel("输入ISBN、书名、出版社查询书籍并选中删除书籍",JLabel.CENTER));
+		panel1.add(new JLabel("输入ISBN、书名、图书号查询书籍并选中删除书籍",JLabel.CENTER));
 		JPanel minPanel1=new JPanel();
 		minPanel1.setLayout(new BoxLayout(minPanel1, BoxLayout.X_AXIS));
 		minPanel1.add(new JLabel("查询:"));
@@ -117,8 +119,10 @@ public class BookDeletePanel extends JPanel {
 						model.setValueAt(rs.getString("bookName"), i, 3);
 						model.setValueAt(rs.getString("publishName"), i, 4);
 						
-						model.addRow(cellData);
+						model.addRow(rowData);
 					}
+					preStmt.close();
+					rs.close();
 				} catch (SQLException e) {
 					
 					e.printStackTrace();
@@ -128,6 +132,39 @@ public class BookDeletePanel extends JPanel {
 		});
 		minPanel1.add(submit);
 		minPanel1.add(delete);
+		/**
+		 * 【删除】注册监听器
+		 */
+		delete.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent arg0) {
+				PreparedStatement pStmt=null;
+				int rows=model.getRowCount()-1;
+				String sql="delete from book where bookid=?";
+				try {
+					pStmt=db.getPreparedStatement(sql);
+					int count=0;
+					for(int i=0;i<rows;i++){
+						if((Boolean)model.getValueAt(i, 0)==true){
+							int bookid=Integer.parseInt((String)model.getValueAt(i, 1));
+							pStmt.setInt(1, bookid);
+							pStmt.addBatch();
+							count++;
+						}
+					}
+					int[] checkrows=pStmt.executeBatch();
+					model.setRowCount(1);
+					model.removeRow(0);
+					if(checkrows.length==count){
+						JOptionPane.showMessageDialog(null, "数据删除成功", "sucess", JOptionPane.OK_OPTION);
+					}
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
 		panel1.add(minPanel1);
 		//加入splitpane
 		sp.add(panel1);
@@ -136,7 +173,7 @@ public class BookDeletePanel extends JPanel {
 	public static void main(String[] args) {
 		JFrame test=new JFrame("test");
 		test.setSize(600, 400);
-		test.getContentPane().add(new BookDeletePanelV1(new DBOperation()));
+		test.getContentPane().add(new BookDeletePanel(new DBOperation()));
 		test.setVisible(true);
 	}
 

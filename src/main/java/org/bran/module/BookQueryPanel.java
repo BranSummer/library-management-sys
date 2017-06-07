@@ -40,6 +40,7 @@ public class BookQueryPanel extends JPanel {
 	private DefaultTableModel model;
 	private String[] headers={"书号","书名","书籍类别","作者","出版社","出版日期","价格","页数","关键词","登记日期","备注","状态"};
 	private Object[][] cellData={{"","","","","","","","","","","",""}};
+	private Object[] rowData={"","","","","","","","","","","",""};
 	
 	public BookQueryPanel(final DBOperation db){
 		super();
@@ -139,7 +140,7 @@ public class BookQueryPanel extends JPanel {
 						model.setValueAt(rs.getString("registerdate"), i, 9);
 						model.setValueAt(rs.getString("remarks"), i, 10);
 						model.setValueAt(rs.getString("status"), i, 11);
-						model.addRow(cellData);
+						model.addRow(rowData);
 					}
 				}catch(SQLException arg){
 					arg.printStackTrace();

@@ -128,6 +128,7 @@ public class BookInsertPanel extends JPanel {
 						preStmt.addBatch();
 					}
 					int[] rows=preStmt.executeBatch();
+					
 					if(rows.length==bookNum){
 						JOptionPane.showMessageDialog(null, "数据插入成功", "sucess", JOptionPane.OK_OPTION);
 					}
