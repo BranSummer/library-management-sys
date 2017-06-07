@@ -18,8 +18,10 @@ import org.bran.module.BookDeletePanel;
 import org.bran.module.BookInsertPanel;
 import org.bran.module.BookQueryPanel;
 import org.bran.module.BookUpdatePanel;
+import org.bran.module.BorrowPanel;
 import org.bran.module.MyChartPanel;
 import org.bran.module.ReaderQueryPanel;
+import org.bran.valueBean.Reader;
 /**
  * 
  *<p>Title: MainFrame.java</p>
@@ -60,9 +62,16 @@ public class MainFrame extends JFrame {
 	private MyChartPanel myChartPanel;
 	//读者查询面板
 	private JScrollPane readerQueryPanel;
+	//借阅面板
+	private JScrollPane borrowPanel;
 	//数据库连接
 	private DBOperation db;
-	public MainFrame(final DBOperation db){
+	/**
+	 * constructor
+	 * @param db
+	 * @param reader
+	 */
+	public MainFrame(final DBOperation db,final Reader reader){
 		super("图书馆");
 		this.setSize(800, 500);
 		this.setLocationRelativeTo(getOwner());
@@ -95,12 +104,24 @@ public class MainFrame extends JFrame {
 				
 			}
 		});
-		borrow=new JMenuItem("借阅");
+		borrow=new JMenuItem("借阅/还书");
+		borrow.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if(borrowPanel==null){
+					borrowPanel=new JScrollPane(new BorrowPanel(reader,db));
+				}
+				setContentPane(borrowPanel);
+				invalidate();
+				validate();
+				
+			}
+		});
 		returnBook=new JMenuItem("还书");
 		system.add(userManage);
 		system.add(exit);
 		system.add(borrow);
-		system.add(returnBook);
+//		system.add(returnBook);
 		//创建查询菜单
 		query=new JMenu("查询");
 		bookQuery=new JMenuItem("图书查询");
@@ -254,6 +275,6 @@ public class MainFrame extends JFrame {
 		this.setVisible(true);
 	}
 	public static void main(String[] args) {
-		new MainFrame(new DBOperation());
+		new MainFrame(new DBOperation(),new Reader());
 	}
 }

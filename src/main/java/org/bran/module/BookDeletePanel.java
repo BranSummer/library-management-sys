@@ -38,19 +38,15 @@ public class BookDeletePanel extends JPanel {
 	private String[] headers={"勾选","书号","ISBN","书名","出版社"};
 	private Object[][] cellData={{false,"","","",""}};
 	private Object[] rowData={false,"","","",""};
-	//勾选复选框
-	private JCheckBox[] checks;
+	
 	/**
-	 * Create the panel.
+	 * constructor
 	 */
 	public BookDeletePanel(final DBOperation db) {
 		super();
 		//分割面板
 		JSplitPane sp=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		this.add(sp);
-		//获取表格行数
-		checks=new JCheckBox[cellData.length];
-		
 		
 		//表格
 		final DefaultTableModel model=new DefaultTableModel(cellData,headers){

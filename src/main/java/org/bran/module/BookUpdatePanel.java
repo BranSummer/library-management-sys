@@ -153,13 +153,14 @@ public class BookUpdatePanel extends JPanel {
 		//类别修改面板
 		JPanel panel5=new JPanel();
 		panel5.setLayout(new BoxLayout(panel5, BoxLayout.X_AXIS));
-		sortLabel=new JLabel("");
+		sortLabel=new JLabel("   ");
 		panel5.add(new JLabel("类　别："));
 		sort=new JComboBox<String>();
 		for(int i=0;i<bookSorts.length;i++){
 			sort.addItem(bookSorts[i]);
 		}
 		panel5.add(sort);
+		panel5.add(new JLabel("当前图书类别:"));
 		panel5.add(sortLabel);
 		//备注修改面板
 		JPanel panel6=new JPanel();

@@ -20,6 +20,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import org.bran.db.DBOperation;
+import org.bran.valueBean.Reader;
 /**
  * 
  *<p>Title: Login.java</p>
@@ -42,6 +43,8 @@ public class Login extends JFrame {
 	private ReaderRegistFrame registFrame;
 	//数据库连接接口
 	private DBOperation db;
+	//读者
+	private Reader user;
 	public Login(){
 		super("登录界面");
 		this.setSize(300, 150);
@@ -80,7 +83,10 @@ public class Login extends JFrame {
 					ps.setString(2, pwdStr);
 					ResultSet rs=ps.executeQuery();
 					if(rs.next()){
-						new MainFrame(db);
+						user=new Reader();
+						user.setId(rs.getInt("readerId")); //只获取了用户的Id和姓名
+						user.setName(rs.getString("readerName"));
+						new MainFrame(db,user);
 						rs.close();
 						setVisible(false);
 					}else{

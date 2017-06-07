@@ -63,7 +63,7 @@ public class MyChartPanel extends JPanel {
 //		pdSet.setValue("文学", 30);
 //		pdSet.setValue("艺术", 20);
 		try {
-			rs=db.executeQuery("select booksort,count(booksort) as count from bookTest group by booksort");
+			rs=db.executeQuery("select booksort,count(booksort) as count from book group by booksort");
 			while(rs.next()){
 				pdSet.setValue(rs.getString("booksort"), rs.getInt("count"));
 			}

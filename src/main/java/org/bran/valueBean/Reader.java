@@ -1,10 +1,18 @@
 package org.bran.valueBean;
 
 public class Reader {
+	/**
+	 * 读者类型
+	 */
+	public static final String STUDENT="S001";
+	public static final String TEACTCHER="T001";
+	public static final String OTHER="O001";
+	
 	private int id;
 	private String name;
 	private String type;	//读者类型
 	private boolean isViolate;//是否违约
+	private int maximum;//最大借阅量
 	public int getId() {
 		return id;
 	}
@@ -28,6 +36,12 @@ public class Reader {
 	}
 	public void setViolate(boolean isViolate) {
 		this.isViolate = isViolate;
+	}
+	public int getMaximum() {
+		return maximum;
+	}
+	public void setMaximum(int maximum) {
+		this.maximum = maximum;
 	}
 	
 	
