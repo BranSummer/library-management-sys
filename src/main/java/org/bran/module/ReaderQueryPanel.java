@@ -122,4 +122,5 @@ public class ReaderQueryPanel extends JPanel {
 		test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		test.setVisible(true);
 	}
+
 }
