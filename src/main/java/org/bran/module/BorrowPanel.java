@@ -312,10 +312,11 @@ public class BorrowPanel extends JPanel {
 		};//连接jdbc获取用户的信息
 		PreparedStatement preStatement=null;
 		ResultSet rs1=null;
+		ResultSet rs2=null;
 		String sql1="use library select readerName,borrow.bookid as id,bookName,borrowDate,typeName,maximum,overDueCount "
 				+ "from book,borrow,Readertype,reader left join blacklist on blacklist.readerId=reader.readerId "
 				+ "where reader.typeid=readerType.typeId and reader.readerId=borrow.readerId and book.bookid=borrow.bookId and reader.readerId=?";
-		
+		String sql2="select maximum from reader ,readerType where reader.typeid=readerType.typeId and readerid=?";
 		try {
 			preStatement=db.getPreparedStatement(sql1);
 			preStatement.setInt(1, reader.getId());
@@ -326,7 +327,6 @@ public class BorrowPanel extends JPanel {
 				model3.setValueAt(rs1.getString("bookName"), i, 2);
 				model3.setValueAt(rs1.getDate("borrowDate").toString(), i, 3);
 				model3.setValueAt(rs1.getInt("maximum"), i, 4);
-				maxNum.setText(rs1.getInt("Maximum")+"");
 				if(rs1.getInt("overDueCount")==0){
 					backList.setText("当前借阅号可正常使用");
 				}else{
@@ -334,6 +334,12 @@ public class BorrowPanel extends JPanel {
 					backList.setText("当前借阅号在黑名单中，请尽快归还到期图书");
 				}
 				model3.addRow(rowData2);
+			}
+			preStatement=db.getPreparedStatement(sql2);
+			preStatement.setInt(1,reader.getId());
+			rs2=preStatement.executeQuery();
+			if(rs2.next()){
+				maxNum.setText(rs2.getInt("maximum")+"");
 			}
 		} catch (SQLException e2) {
 			e2.printStackTrace();

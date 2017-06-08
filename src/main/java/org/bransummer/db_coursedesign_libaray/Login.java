@@ -46,7 +46,7 @@ public class Login extends JFrame {
 	//读者
 	private Reader user;
 	public Login(){
-		super("登录界面");
+		super("图书借阅管理系统登录界面");
 		this.setSize(300, 150);
 		this.setLocationRelativeTo(getOwner());
 		Container container=this.getContentPane();

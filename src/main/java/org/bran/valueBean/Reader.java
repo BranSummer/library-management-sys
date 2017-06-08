@@ -2,7 +2,7 @@ package org.bran.valueBean;
 
 public class Reader {
 	/**
-	 * 读者类型
+	 * 读者权限类型
 	 */
 	public static final String MANAGER="0";
 	public static final String USER="1";
