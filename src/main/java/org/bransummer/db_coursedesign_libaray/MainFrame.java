@@ -71,7 +71,7 @@ public class MainFrame extends JFrame {
 	 * @param db
 	 * @param reader
 	 */
-	public MainFrame(final DBOperation db,final Reader reader){
+	 MainFrame(final DBOperation db,final Reader reader){
 		super("图书馆");
 		this.setSize(800, 500);
 		this.setLocationRelativeTo(getOwner());
@@ -159,7 +159,7 @@ public class MainFrame extends JFrame {
 		});
 		query.add(bookQuery);
 //		query.add(readerQuery);
-		query.add(borrowQuery);
+//		query.add(borrowQuery);
 		query.add(chart);
 		//创建数据操作菜单
 		edit=new JMenu("编辑");
@@ -272,8 +272,17 @@ public class MainFrame extends JFrame {
 			}
 		});	
 		
+		/**
+		 * 根据用户类别隐藏一些控件
+		 */
+		if(reader.getType().equals(reader.USER)){
+			this.edit.setEnabled(false);
+			this.userManage.setEnabled(false);
+		}
+		
 		this.setVisible(true);
 	}
+	
 	public static void main(String[] args) {
 		new MainFrame(new DBOperation(),new Reader());
 	}

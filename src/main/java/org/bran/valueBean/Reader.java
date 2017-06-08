@@ -4,9 +4,9 @@ public class Reader {
 	/**
 	 * 读者类型
 	 */
-	public static final String STUDENT="S001";
-	public static final String TEACTCHER="T001";
-	public static final String OTHER="O001";
+	public static final String MANAGER="0";
+	public static final String USER="1";
+	
 	
 	private int id;
 	private String name;

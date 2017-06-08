@@ -74,18 +74,25 @@ public class Login extends JFrame {
 				}
 				@SuppressWarnings("deprecation")
 				String pwdStr=password.getText();
-				String selesction=group.getSelection().toString();
+				String authority="否";
+				if(admin.isSelected()){
+					authority="是";
+				}
 				
-				String sql="use library select * from reader where readerid=? and password=?";
+				String sql="use library select * from reader where readerid=? and password=? and admin=?" ;
 				try {
 					PreparedStatement ps=db.getPreparedStatement(sql);
 					ps.setInt(1, userId);
 					ps.setString(2, pwdStr);
+					ps.setString(3, authority);
 					ResultSet rs=ps.executeQuery();
 					if(rs.next()){
 						user=new Reader();
 						user.setId(rs.getInt("readerId")); //只获取了用户的Id和姓名
 						user.setName(rs.getString("readerName"));
+						if(rs.getString("admin").equals("是")){
+							user.setType(Reader.MANAGER);
+						}else user.setType(Reader.USER);
 						new MainFrame(db,user);
 						rs.close();
 						setVisible(false);

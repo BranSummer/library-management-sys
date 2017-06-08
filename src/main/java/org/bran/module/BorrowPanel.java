@@ -5,12 +5,14 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -37,10 +39,11 @@ public class BorrowPanel extends JPanel {
 
 	//文本框 搜索输入
 	private JTextField input;
-	//按钮 查找 借阅 归还
+	//按钮 查找 借阅 归还 更新
 	private JButton queryB;
 	private JButton borrowB;
 	private JButton returnB;
+	private JButton updateB;
 	//表格 用于借阅
 	private JTable table;
 	private DefaultTableModel model;
@@ -57,7 +60,7 @@ public class BorrowPanel extends JPanel {
 	/**
 	 * constructor
 	 */
-	public BorrowPanel(Reader reader,final DBOperation db){
+	public BorrowPanel(final Reader reader,final DBOperation db){
 		super();
 		
 		//分割面板
@@ -170,8 +173,51 @@ public class BorrowPanel extends JPanel {
 				borrowB.addActionListener(new ActionListener() {
 					
 					public void actionPerformed(ActionEvent e) {
-					
-						
+						int rows=model.getRowCount()-1;
+						int borrowed=model2.getRowCount()-1;
+						int max=Integer.parseInt(maxNum.getText());
+						int selected=0;
+						for(int i=0;i<rows;i++){
+							if((Boolean)model.getValueAt(i, 0)==true){
+								selected++;
+							}
+						}
+						if(borrowed+selected>max){
+							JOptionPane.showMessageDialog(null, "超过借阅限制", "sucess", JOptionPane.OK_OPTION);
+						}else if(!reader.isViolate()){		
+							Date date=new Date();
+							java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+							PreparedStatement pStmt=null;
+							
+							String sql="insert into borrow(readerId,bookid,borrowDate) values(?,?,?)";
+							try {
+								pStmt=db.getPreparedStatement(sql);
+								int count=0;
+								for(int i=0;i<rows;i++){
+									if((Boolean)model.getValueAt(i, 0)==true){
+										int bookid=Integer.parseInt((String)model.getValueAt(i, 1));
+										int readerid=reader.getId();
+										pStmt.setInt(1, readerid);
+										pStmt.setInt(2, bookid);
+										pStmt.setDate(3, sqlDate);
+										
+										pStmt.addBatch();
+										count++;
+									}
+								}
+								int[] checkrows=pStmt.executeBatch();
+								model.setRowCount(1);
+								model.removeRow(0);
+								if(checkrows.length==count){
+									JOptionPane.showMessageDialog(null, "借阅成功", "sucess", JOptionPane.OK_OPTION);
+								}
+								
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+						}else JOptionPane.showMessageDialog(null, "不能借阅", "sucess", JOptionPane.OK_OPTION);
 					}
 				});
 				minPanel1.add(borrowB);
@@ -189,9 +235,50 @@ public class BorrowPanel extends JPanel {
 				JPanel panel2=new JPanel();
 				panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
 				panel2.add(new JLabel("已借阅的图书，选中可归还"));
+				panel2.add(Box.createGlue());
 				returnB=new JButton("归还");
+				returnB.addActionListener(new ActionListener() {
+					
+					public void actionPerformed(ActionEvent arg0) {
+						Date date=new Date();
+						java.sql.Date sqlDate=new java.sql.Date(date.getTime());
+						PreparedStatement pStmt=null;
+						int rows=model2.getRowCount()-1;
+						String sql="update borrow set returnTime=? where bookId=?";
+						try {
+							pStmt=db.getPreparedStatement(sql);
+							int count=0;
+							for(int i=0;i<rows;i++){
+								if((Boolean)model2.getValueAt(i, 0)==true){
+									pStmt.setDate(1, sqlDate);
+									int bookid=(Integer)model2.getValueAt(i, 1);
+									pStmt.setInt(2, bookid);
+									model2.removeRow(i);
+									pStmt.addBatch();
+									count++;
+								}
+							}
+							int[] checkrows=pStmt.executeBatch();
+							
+							if(checkrows.length==count){
+								JOptionPane.showMessageDialog(null, "还书成功", "sucess", JOptionPane.OK_OPTION);
+							}
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
+				});
 				panel2.add(returnB);
-				
+				updateB=new JButton("更新");
+				updateB.addActionListener(new ActionListener() {
+					
+					public void actionPerformed(ActionEvent arg0) {
+						model2=queryModel(db, reader);
+					}
+				});
+				panel2.add(updateB);
 				//加入sp
 				JSplitPane sp2=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 				sp2.add(panel1,JSplitPane.TOP);
@@ -240,9 +327,12 @@ public class BorrowPanel extends JPanel {
 				model3.setValueAt(rs1.getDate("borrowDate").toString(), i, 3);
 				model3.setValueAt(rs1.getInt("maximum"), i, 4);
 				maxNum.setText(rs1.getInt("Maximum")+"");
-				if((Object)rs1.getInt("overDueCount")==null){
-					backList=new JLabel("当前借阅号可正常使用");
-				}else backList.setText("当前借阅号在黑名单中，请尽快归还到期图书");
+				if(rs1.getInt("overDueCount")==0){
+					backList.setText("当前借阅号可正常使用");
+				}else{
+					reader.setViolate(true);
+					backList.setText("当前借阅号在黑名单中，请尽快归还到期图书");
+				}
 				model3.addRow(rowData2);
 			}
 		} catch (SQLException e2) {
