@@ -22,10 +22,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/第三方类库/JDatePicker/jdatepicker-1.3.4.jar"/>
 	<classpathentry kind="lib" path="D:/第三方类库/Microsoft JDBC Driver 6.0 for SQL Server/sqljdbc_6.0/chs/jre8/sqljdbc42.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="D:/第三方类库/JFreeChart/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
-	<classpathentry kind="lib" path="D:/第三方类库/JFreeChart/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
