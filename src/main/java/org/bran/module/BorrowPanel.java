@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -34,7 +35,7 @@ public class BorrowPanel extends JPanel {
 	private JLabel borrowNum;
 	private JLabel maxNum;
 	private JLabel name;
-	private JLabel backList;
+	private JLabel blackList;
 	private JLabel typeName;
 
 	//文本框 搜索输入
@@ -56,6 +57,9 @@ public class BorrowPanel extends JPanel {
 	private String[] headers2={"勾选","书号","书名","借阅日期","期限/月"};
 	private Object[][] cellData2={{false,"","","",""}};
 	private Object[] rowData2={false,"","","",""};
+	//下拉框
+		private JComboBox<String> combobox;
+		private String[] querySort={"查询书名","查询书号","查询ISBN","查询出版社","查询作者"};
 	
 	/**
 	 * constructor
@@ -72,7 +76,7 @@ public class BorrowPanel extends JPanel {
 		name=new JLabel(reader.getName());
 		maxNum=new JLabel(reader.getMaximum()+"");
 		borrowNum=new JLabel("");
-		backList=new JLabel("当前借阅号可正常使用");
+		blackList=new JLabel("当前借阅号可正常使用");
 		
 		typeName=new JLabel("");
 		
@@ -103,7 +107,12 @@ public class BorrowPanel extends JPanel {
 				scroll.setViewportView(table);
 				JPanel panel1=new JPanel();
 				panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-				panel1.add(new JLabel("输入ISBN、书名、图书号查询书籍并选中并借阅书籍",JLabel.CENTER));
+				//创建输入类别
+				combobox=new JComboBox<String>();
+				for(int i=0;i<querySort.length;i++){
+					combobox.addItem(querySort[i]);
+				}
+				panel1.add(combobox);
 				JPanel minPanel0=new JPanel();
 				minPanel0.setLayout(new BoxLayout(minPanel0, BoxLayout.X_AXIS));
 				minPanel0.add(new JLabel("姓名："));
@@ -115,7 +124,7 @@ public class BorrowPanel extends JPanel {
 				minPanel0.add(maxNum);
 				JPanel minPanel2=new JPanel();
 				minPanel2.setLayout(new BoxLayout(minPanel2, BoxLayout.X_AXIS));
-				minPanel2.add(backList);
+				minPanel2.add(blackList);
 				minPanel2.add(Box.createGlue());
 				JPanel minPanel1=new JPanel();	
 				minPanel1.setLayout(new BoxLayout(minPanel1, BoxLayout.X_AXIS));
@@ -177,13 +186,19 @@ public class BorrowPanel extends JPanel {
 						int borrowed=model2.getRowCount()-1;
 						int max=Integer.parseInt(maxNum.getText());
 						int selected=0;
+						boolean isBorrowed=false;
 						for(int i=0;i<rows;i++){
 							if((Boolean)model.getValueAt(i, 0)==true){
 								selected++;
 							}
+							if(model.getValueAt(i, 5).equals("在库")){
+								isBorrowed=true;
+							}
 						}
-						if(borrowed+selected>max){
-							JOptionPane.showMessageDialog(null, "超过借阅限制", "sucess", JOptionPane.OK_OPTION);
+						if(isBorrowed){
+							JOptionPane.showMessageDialog(null, "无法借阅已借出图书", "sucess", JOptionPane.OK_OPTION);
+						}else if(borrowed+selected>max){
+							JOptionPane.showMessageDialog(null, "超过最大借阅限制", "sucess", JOptionPane.OK_OPTION);
 						}else if(!reader.isViolate()){		
 							Date date=new Date();
 							java.sql.Date sqlDate=new java.sql.Date(date.getTime());
@@ -328,10 +343,10 @@ public class BorrowPanel extends JPanel {
 				model3.setValueAt(rs1.getDate("borrowDate").toString(), i, 3);
 				model3.setValueAt(rs1.getInt("maximum"), i, 4);
 				if(rs1.getInt("overDueCount")==0){
-					backList.setText("当前借阅号可正常使用");
+					blackList.setText("当前借阅号可正常使用");
 				}else{
 					reader.setViolate(true);
-					backList.setText("当前借阅号在黑名单中，请尽快归还到期图书");
+					blackList.setText("当前借阅号在黑名单中，请尽快归还到期图书");
 				}
 				model3.addRow(rowData2);
 			}

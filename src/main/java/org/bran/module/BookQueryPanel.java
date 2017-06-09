@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -41,7 +41,9 @@ public class BookQueryPanel extends JPanel {
 	private String[] headers={"书号","书名","书籍类别","作者","出版社","出版日期","价格","页数","关键词","登记日期","备注","状态"};
 	private Object[][] cellData={{"","","","","","","","","","","",""}};
 	private Object[] rowData={"","","","","","","","","","","",""};
-	
+	//下拉框
+	private JComboBox<String> combobox;
+	private String[] querySort={"查询书名","查询书号","查询ISBN","查询出版社","查询作者"};
 	public BookQueryPanel(final DBOperation db){
 		super();
 		//创建分割面板 水平分割
@@ -59,11 +61,16 @@ public class BookQueryPanel extends JPanel {
 		//JPanel panel2=new JPanel();
 		JScrollPane scroll=new JScrollPane();
 		scroll.setViewportView(table);
+		//创建输入类别
+		combobox=new JComboBox<String>();
+		for(int i=0;i<querySort.length;i++){
+			combobox.addItem(querySort[i]);
+		}
 	//	panel2.add(table);
 		//创建标签
 		JPanel panel1=new JPanel();
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-		panel1.add(new JLabel("输入ISNB、书名、作者或者出版日期查询书籍",JLabel.CENTER));
+		panel1.add(combobox);
 		//输入区
 		JPanel minPanel1=new JPanel();
 		minPanel1.setLayout(new BoxLayout(minPanel1, BoxLayout.X_AXIS));
