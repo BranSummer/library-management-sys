@@ -1,6 +1,8 @@
-# db-coursedesign-libaray
+# library-management-system
 ————图书馆管理系统  
-所用的DBMS:sql server
+所用的DBMS:sql server  
+用java实现
+
 ### 关系模式
 * book       （**bookid**,bookname,ISBN,booksort,author,publishname,publishdate,price,pagenum,keywords,registerdate,remarks）
 * reader  
